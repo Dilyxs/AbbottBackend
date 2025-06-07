@@ -106,3 +106,9 @@ type FinanceDetailSend struct {
 type FinanceDetailChangeHasBeenTaken struct {
 	Ids []int `json:"ids"`
 }
+
+type ImageDataSent struct {
+	Url         string `json:"url"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+}

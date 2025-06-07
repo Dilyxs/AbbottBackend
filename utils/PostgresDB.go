@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
@@ -371,9 +372,15 @@ func UpdateUtilizedFinanceDetailDB(ids []int) error {
 
 }
 
-//func UpdateAnImageDB() (link, error) {
-//current_time := time.Date()
-//	conn := Connect()
+func UploadAnImageDB(CloudPath, title, description string) error {
+	conn := Connect()
+	location, _ := time.LoadLocation("America/New_York")
 
-//conn.Exec(context.Background(), "INSERT INTO")
-//}
+	_, err := conn.Exec(context.Background(), "INSERT INTO ImageData(url,datetime,title,description) VALUES($1,$2,$3,$4)", CloudPath, time.Now().In(location), title, description)
+
+	if err != nil {
+		return err
+	} else {
+		return nil
+	}
+}

@@ -245,3 +245,16 @@ func ChangeHasBeenTaken(c *fiber.Ctx) error {
 
 	}
 }
+
+func InsertAnImage(c *fiber.Ctx) error {
+	var data ImageDataSent
+	if err := c.BodyParser(&data); err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": fmt.Sprintf("%v", err)})
+	}
+	if err := UploadAnImageDB(data.Url, data.Title, data.Description); err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Database Error"})
+	} else {
+		return c.Status(200).JSON(fiber.Map{"message": "ok"})
+
+	}
+}

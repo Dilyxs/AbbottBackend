@@ -1,12 +1,23 @@
 package main
 
 import (
+	"fmt"
+
 	"adsayan.com/test/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func main() {
+	if link, err := utils.UploadAnImage("./test_image.jpg"); err != nil {
+		fmt.Println("error as ", err)
+	} else {
+		fmt.Printf("link is %v", link)
+		err := utils.UploadAnImageDB(link, "test", "test")
+		fmt.Println((err))
+
+	}
+
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
