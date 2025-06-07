@@ -370,3 +370,10 @@ func UpdateUtilizedFinanceDetailDB(ids []int) error {
 	}
 
 }
+
+//func UpdateAnImageDB() (link, error) {
+//current_time := time.Date()
+//	conn := Connect()
+
+//conn.Exec(context.Background(), "INSERT INTO")
+//}
