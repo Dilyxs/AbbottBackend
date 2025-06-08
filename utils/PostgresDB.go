@@ -375,12 +375,37 @@ func UpdateUtilizedFinanceDetailDB(ids []int) error {
 func UploadAnImageDB(CloudPath, title, description string) error {
 	conn := Connect()
 	location, _ := time.LoadLocation("America/New_York")
+	time_rn := time.Now().In(location)
 
-	_, err := conn.Exec(context.Background(), "INSERT INTO ImageData(url,datetime,title,description) VALUES($1,$2,$3,$4)", CloudPath, time.Now().In(location), title, description)
+	_, err := conn.Exec(context.Background(), "INSERT INTO ImageData(url,datetime,title,description) VALUES($1,$2,$3,$4)", CloudPath, time_rn, title, description)
 
 	if err != nil {
 		return err
 	} else {
 		return nil
 	}
+}
+
+func FetchAllImageDataDB() ([]ImageDataReceived, error) {
+	var data []ImageDataReceived
+	conn := Connect()
+	rows, err := conn.Query(context.Background(), "SELECT id,url,datetime,title,description FROM ImageData")
+	if err != nil {
+		return data, err
+	}
+	for rows.Next() {
+		var localData ImageDataReceived
+		rows.Scan(&localData.Id, &localData.Url, &localData.Datetime, &localData.Title, &localData.Description)
+		data = append(data, localData)
+	}
+	return data, nil
+}
+
+func DeleteAImageDataDB(id int) error {
+	conn := Connect()
+
+	if _, err := conn.Exec(context.Background(), "DELETE FROM ImageData WHERE id=$1", id); err != nil {
+		return err
+	}
+	return nil
 }

@@ -258,3 +258,25 @@ func InsertAnImage(c *fiber.Ctx) error {
 
 	}
 }
+
+func FetchAllImageData(c *fiber.Ctx) error {
+	data, err := FetchAllImageDataDB()
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": fmt.Sprintf("%v", err)})
+	} else {
+		return c.Status(200).JSON(data)
+
+	}
+
+}
+func DeleteAnImagedata(c *fiber.Ctx) error {
+	var id SendUserID
+	if err := c.BodyParser(&id); err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": fmt.Sprintf("%v", err)})
+	}
+	if err := DeleteAImageDataDB(id.Id); err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Database Error"})
+	} else {
+		return c.Status(200).JSON(fiber.Map{"message": "ok"})
+	}
+}

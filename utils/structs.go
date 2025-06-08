@@ -112,3 +112,11 @@ type ImageDataSent struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 }
+
+type ImageDataReceived struct {
+	Id          int            `json:"id"`
+	Datetime    time.Time      `json:"time"`
+	Url         string         `json:"url"`
+	Title       sql.NullString `json:"title"`
+	Description sql.NullString `json:"description"`
+}
