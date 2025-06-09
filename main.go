@@ -35,6 +35,7 @@ func main() {
 	app.Post("/ChangeFinance", utils.ChangeHasBeenTaken)
 	app.Get("/ImageData", utils.FetchAllImageData)
 	app.Delete("/DeleteImage", utils.DeleteAnImagedata)
+	app.Post("/InsertImage", utils.InsertAnImage)
 
 	app.Listen("0.0.0.0:4330")
 }
