@@ -31,8 +31,11 @@ func main() {
 	app.Post("/PostNote", utils.UploadANote)
 	app.Delete("/DeleteNote", utils.DeleteANote)
 	app.Put("/UpdateNote", utils.UpdateANote)
+
 	app.Delete("/DeleteFinance", utils.DeleteAFinanceDetail)
 	app.Post("/ChangeFinance", utils.ChangeHasBeenTaken)
+	app.Get("/GetFinance", utils.FetchAllFinanceDetail)
+	app.Post("/PostFinance", utils.InsertAFinanceDetail)
 	app.Get("/ImageData", utils.FetchAllImageData)
 	app.Delete("/DeleteImage", utils.DeleteAnImagedata)
 	app.Post("/InsertImage", utils.InsertAnImage)
