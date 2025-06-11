@@ -51,17 +51,6 @@ func LoginUser(c *fiber.Ctx) error {
 	if id, err := VerifyUser(user.Email, user.Password); err != nil {
 		return c.Status(401).JSON(fiber.Map{"error": "wrong password"})
 	} else { // correct data
-		c.Cookie(&fiber.Cookie{
-			Name:     "session_token",
-			Value:    fmt.Sprintf("%v", id),
-			Path:     "/",
-			HTTPOnly: true,
-			Domain:   "abbotthustlers.com",
-			Secure:   true, //change to true if in production
-			SameSite: fiber.CookieSameSiteNoneMode,
-			MaxAge:   3600 * 24 * 7, //once a week
-
-		})
 		return c.Status(200).JSON(fiber.Map{"id": id})
 
 	}
