@@ -48,7 +48,7 @@ func LoginUser(c *fiber.Ctx) error {
 	if err := c.BodyParser(&user); err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "wrong format data"})
 	}
-	if err, id := VerifyUser(user.Email, user.Password); err != nil {
+	if id, err := VerifyUser(user.Email, user.Password); err != nil {
 		return c.Status(401).JSON(fiber.Map{"error": "wrong password"})
 	} else { // correct data
 		c.Cookie(&fiber.Cookie{
@@ -62,7 +62,7 @@ func LoginUser(c *fiber.Ctx) error {
 			MaxAge:   3600 * 24 * 7, //once a week
 
 		})
-		return c.Status(200).JSON(fiber.Map{"message": "ok"})
+		return c.Status(200).JSON(fiber.Map{"id": id})
 
 	}
 }

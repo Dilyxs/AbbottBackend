@@ -53,7 +53,7 @@ func InsertUser(email, password string) error {
 	}
 }
 
-func VerifyUser(email, password string) (error, interface{}) {
+func VerifyUser(email, password string) (int, error) {
 	connect := Connect()
 	defer connect.Close(context.Background())
 	var id int
@@ -64,17 +64,17 @@ func VerifyUser(email, password string) (error, interface{}) {
 
 	err := rows.Scan(&HashedPass)
 	if err != nil {
-		return fmt.Errorf("no_user\n"), nil
+		return 0, fmt.Errorf("no_user\n")
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(HashedPass), []byte(password))
 	if err != nil {
-		return fmt.Errorf("wrong_pass\n"), nil
+		return 0, fmt.Errorf("wrong_pass\n")
 	}
 	rowsNew := connect.QueryRow(context.Background(), "SELECT id FROM logininfo WHERE email=$1", email)
 	rowsNew.Scan(&id)
 
-	return nil, id
+	return id, nil
 }
 
 func InsertClient(client Client) error {
