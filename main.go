@@ -31,7 +31,6 @@ func main() {
 	app.Post("/PostNote", utils.UploadANote)
 	app.Delete("/DeleteNote", utils.DeleteANote)
 	app.Put("/UpdateNote", utils.UpdateANote)
-
 	app.Delete("/DeleteFinance", utils.DeleteAFinanceDetail)
 	app.Post("/ChangeFinance", utils.ChangeHasBeenTaken)
 	app.Get("/GetFinance", utils.FetchAllFinanceDetail)
@@ -39,6 +38,8 @@ func main() {
 	app.Get("/ImageData", utils.FetchAllImageData)
 	app.Delete("/DeleteImage", utils.DeleteAnImagedata)
 	app.Post("/InsertImage", utils.InsertAnImage)
+	app.Post("/InsertToken", utils.InsertAToken)
+	app.Post("/TokenVerification", utils.VerifyToken)
 
 	app.Listen("0.0.0.0:4330")
 }

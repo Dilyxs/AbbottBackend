@@ -280,3 +280,28 @@ func DeleteAnImagedata(c *fiber.Ctx) error {
 		return c.Status(200).JSON(fiber.Map{"message": "ok"})
 	}
 }
+
+func InsertAToken(c *fiber.Ctx) error {
+	var id SendUserID
+	if err := c.BodyParser(&id); err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": fmt.Sprintf("%v", err)})
+	}
+	if data, err := InsertAAuthTokenDB(id.Id); err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Database Error"})
+	} else {
+		return c.Status(200).JSON(data)
+	}
+}
+
+func VerifyToken(c *fiber.Ctx) error {
+	var data VerificationData
+	if err := c.BodyParser(&data); err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": fmt.Sprintf("%v", err)})
+	}
+	if err := IsTokenValidDB(data.Verification, data.UserID); err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": fmt.Sprintf("Database Error as %v", err)})
+	} else {
+		return c.Status(200).JSON(fiber.Map{"message": "ok"})
+	}
+
+}

@@ -120,3 +120,22 @@ type ImageDataReceived struct {
 	Title       sql.NullString `json:"title"`
 	Description sql.NullString `json:"description"`
 }
+
+type AuthorizationDetailsCreation struct {
+	StartTime    time.Time `json:"starttime"`
+	EndTime      time.Time `json:"endtime"`
+	Verification string    `json:"verification"`
+	UserID       int       `json:"userid"`
+}
+
+type AuthorizationDetailsFetch struct {
+	Id           int       `json:"id"`
+	StartTime    time.Time `json:"starttime"`
+	EndTime      time.Time `json:"endtime"`
+	Verification string    `json:"verification"`
+	UserID       int       `json:"userid"`
+}
+type VerificationData struct {
+	Verification string `json:"verification"`
+	UserID       int    `json:"userid"`
+}

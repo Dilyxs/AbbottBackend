@@ -8,6 +8,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
+	"github.com/sethvargo/go-password/password"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -406,6 +407,47 @@ func DeleteAImageDataDB(id int) error {
 
 	if _, err := conn.Exec(context.Background(), "DELETE FROM ImageData WHERE id=$1", id); err != nil {
 		return err
+	}
+	return nil
+}
+
+func InsertAAuthTokenDB(userid int) (AuthorizationDetailsFetch, error) {
+	conn := Connect()
+	var data2beSent AuthorizationDetailsFetch
+
+	var currentTime = time.Now()
+	var latertime = currentTime.Add(14 * 24 * time.Hour)
+	var verification, _ = password.Generate(64, 10, 12, false, true)
+
+	if _, err := conn.Exec(context.Background(), "INSERT INTO authverification(starttime,endtime,verification,userid) VALUES($1,$2,$3,$4)", currentTime, latertime, verification, userid); err != nil {
+		return AuthorizationDetailsFetch{}, err
+	} else {
+		row := conn.QueryRow(context.Background(), "SELECT id, starttime,endtime,verification,userid FROM authverification WHERE verification = $1", verification)
+		row.Scan(&data2beSent.Id, &data2beSent.StartTime, &data2beSent.EndTime, &data2beSent.Verification, &data2beSent.UserID)
+		return data2beSent, nil
+
+	}
+
+}
+func IsTokenValidDB(verification string, userid int) error {
+	conn := Connect()
+
+	var data AuthorizationDetailsFetch
+
+	err := conn.QueryRow(context.Background(),
+		"SELECT id, starttime, endtime, verification, userid FROM authverification WHERE userid=$1 AND verification=$2",
+		userid, verification).Scan(
+		&data.Id, &data.StartTime, &data.EndTime, &data.Verification, &data.UserID)
+
+	if err == pgx.ErrNoRows {
+		return fmt.Errorf("NoToken")
+	} else if err != nil {
+		CurrentTime := time.Now()
+		if CurrentTime.After(data.StartTime) && CurrentTime.Before(data.EndTime) {
+			return nil
+		} else {
+			return fmt.Errorf("TokenExperied")
+		}
 	}
 	return nil
 }

@@ -5,13 +5,18 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/joho/godotenv"
 	"google.golang.org/api/option"
 	"google.golang.org/api/sheets/v4"
 )
 
-var googleSheetID string = os.Getenv("GoogleSheets")
+func LoadGoogleSheetId() string {
+	godotenv.Load()
+	return os.Getenv("GoogleSheets")
+}
 
 func SaveToGoogleSheets(client Client) error {
+
 	ctx := context.Background()
 	srv, err := sheets.NewService(ctx, option.WithCredentialsFile("credentials.json"))
 	if err != nil {
@@ -41,6 +46,7 @@ func SaveToGoogleSheets(client Client) error {
 	valueRange := &sheets.ValueRange{
 		Values: values,
 	}
+	googleSheetID := LoadGoogleSheetId()
 
 	_, err = srv.Spreadsheets.Values.Append(googleSheetID, sheetRange, valueRange).
 		ValueInputOption("RAW").
