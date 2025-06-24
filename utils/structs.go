@@ -139,3 +139,16 @@ type VerificationData struct {
 	Verification string `json:"verification"`
 	UserID       int    `json:"userid"`
 }
+type ColorPickerImageData struct {
+	Id            int    `json:"id"`
+	Color         string `json:"color"`
+	Type          string `json:"type"`
+	Opacity       string `json:"opacity"`
+	Url           string `json:"url"`
+	ColorCategory string `json:"colorcategory"`
+}
+type DetailsForColorPickerImageData struct {
+	TypeData string `json:"type"`
+	Color    string `json:"color"`
+	Opacity  string `json:"opacity"`
+}

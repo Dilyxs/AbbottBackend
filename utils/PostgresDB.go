@@ -451,3 +451,17 @@ func IsTokenValidDB(verification string, userid int) error {
 	}
 	return nil
 }
+
+func FetchSingleColorPickerImageDB(TypeData string, color, opacity string) (ColorPickerImageData, error) {
+	var data ColorPickerImageData
+	conn := Connect()
+
+	row := conn.QueryRow(context.Background(), "SELECT * FROM ColorPickerData where (color = $1) AND (type = $2) AND (opacity = $3)", color, TypeData, opacity)
+	err := row.Scan(&data)
+	if err != nil {
+		return ColorPickerImageData{}, err
+	} else {
+		return data, nil
+	}
+
+}
