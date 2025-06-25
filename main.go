@@ -40,6 +40,7 @@ func main() {
 	app.Post("/InsertImage", utils.InsertAnImage)
 	app.Post("/InsertToken", utils.InsertAToken)
 	app.Post("/TokenVerification", utils.VerifyToken)
+	app.Post("/SelectColorPicker", utils.FetchAppropriateColorPickerData)
 
 	app.Listen("0.0.0.0:4330")
 }
